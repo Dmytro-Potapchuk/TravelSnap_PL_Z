@@ -9,12 +9,7 @@ interface TripCardProps {
     rating: number;
 }
 
-const TripCard: React.FC<TripCardProps> = ({
-                                               title,
-                                               destination,
-                                               date,
-                                               rating,
-                                           }) => {
+const TripCard = ({ title, destination, date, rating }: TripCardProps) => {
     return (
         <View style={styles.card}>
             <Text style={styles.title}>{title}</Text>
