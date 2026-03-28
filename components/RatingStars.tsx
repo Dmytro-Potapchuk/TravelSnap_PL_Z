@@ -1,14 +1,19 @@
-import React from "react";
 import { Text } from "react-native";
 
 interface RatingStarsProps {
     rating: number;
 }
 
-const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
-    const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
+function clampRating(rating: number): number {
+    return Math.max(0, Math.min(5, Math.floor(rating)));
+}
 
-    return <Text>{stars}</Text>;
-};
+function RatingStars({ rating }: RatingStarsProps) {
+    const safeRating = clampRating(rating);
+    const filledStars = "★".repeat(safeRating);
+    const emptyStars = "☆".repeat(5 - safeRating);
+
+    return <Text>{filledStars + emptyStars}</Text>;
+}
 
 export default RatingStars;
