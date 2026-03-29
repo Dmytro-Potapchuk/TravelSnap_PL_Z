@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import RatingStars from "./RatingStars";
 
 interface TripCardProps {
@@ -6,15 +6,21 @@ interface TripCardProps {
     destination: string;
     date: string;
     rating: number;
+    onUsun?: () => void;
 }
 
-function TripCard({ title, destination, date, rating }: TripCardProps) {
+function TripCard({ title, destination, date, rating, onUsun }: TripCardProps) {
     return (
         <View style={styles.card}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.destination}>{destination}</Text>
             <Text style={styles.date}>{date}</Text>
             <RatingStars rating={rating} />
+            {onUsun && (
+                <Pressable onPress={onUsun}>
+                    <Text style={styles.removeButton}>Usuń</Text>
+                </Pressable>
+            )}
         </View>
     );
 }
@@ -45,6 +51,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#666",
         marginBottom: 8,
+    },
+    removeButton: {
+        color: "red",
+        marginTop: 8,
+        fontWeight: "bold",
     },
 });
 

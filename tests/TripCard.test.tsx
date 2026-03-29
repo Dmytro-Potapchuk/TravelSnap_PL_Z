@@ -1,40 +1,50 @@
 import React from "react";
-import { render } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import TripCard from "../components/TripCard";
 
-jest.mock("../components/RatingStars", () => {
-    const { Text } = require("react-native");
-    return function MockRatingStars({ rating }: { rating: number }) {
-        return <Text>{rating}</Text>;
-    };
-});
-
 describe("TripCard", () => {
-    it("renders trip information", () => {
+    it("renders title, destination, date and stars", () => {
         const { getByText } = render(
             <TripCard
-                title="Weekend w Rzymie"
-                destination="Włochy"
-                date="2024-06-15"
-                rating={5}
-            />
+                title="Test Trip"
+                destination="Paris"
+                date="2024-07"
+                rating={4}
+            />,
         );
 
-        getByText("Weekend w Rzymie");
-        getByText("Włochy");
-        getByText("2024-06-15");
+        getByText("Test Trip");
+        getByText("Paris");
+        getByText("2024-07");
+        getByText("★★★★☆");
     });
 
-    it("passes rating to RatingStars", () => {
+    it("renders remove control and calls onUsun when pressed", () => {
+        const onUsun = jest.fn();
         const { getByText } = render(
             <TripCard
-                title="City break Paryż"
-                destination="Francja"
-                date="2024-08-01"
-                rating={4}
-            />
+                title="T"
+                destination="D"
+                date="2024-01"
+                rating={3}
+                onUsun={onUsun}
+            />,
         );
 
-        getByText("4");
+        fireEvent.press(getByText("Usuń"));
+        expect(onUsun).toHaveBeenCalledTimes(1);
+    });
+
+    it("does not show remove control when onUsun is omitted", () => {
+        const { queryByText } = render(
+            <TripCard
+                title="T"
+                destination="D"
+                date="2024-01"
+                rating={3}
+            />,
+        );
+
+        expect(queryByText("Usuń")).toBeNull();
     });
 });
